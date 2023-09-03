@@ -1,0 +1,22 @@
+<RCC>
+    <qresource prefix="/image">
+        <file>image/demo.gif</file>
+        <file>image/del.svg</file>
+        <file>image/fullscreen.svg</file>
+        <file>image/search.svg</file>
+        <file>image/shutdown.svg</file>
+        <file>image/setting_this.svg</file>
+        <file>image/setting_dde.svg</file>
+        <file>image/love.svg</file>
+        <file>image/list.svg</file>
+        <file>image/list_choose.svg</file>
+        <file>image/table.svg</file>
+        <file>image/table_choose.svg</file>
+        <file>image/chinese.txt</file>
+        <file>image/table_table.svg</file>
+        <file>image/table_table_choose.svg</file>
+        <file>image/auto_start.svg</file>
+        <file>image/fullscreen_background.jpg</file>
+        <file>image/back_simple.svg</file>
+    </qresource>
+</RCC>
