@@ -19,6 +19,10 @@ qt 5.15.8
 
 4.不支持使用代理
 
+5.不支持使用鼠标拉动launcher进行换页,使用鼠标滚轮换页
+
+6.不支持除Esc Launcher按键以外的键盘操作
+
 ## 存档
 存档于"~/.local/lib/my_launcher_data"
 
