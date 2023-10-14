@@ -258,6 +258,13 @@ void Launcher_FullScreen::get_desktop_file()
                 {
                     exec=nullptr;
                 }
+                if (desktopFile.contains("Terminal"))
+                {
+                    if (desktopFile.value("Terminal").toString()=="true")
+                    {
+                        exec.append("[terminal]");
+                    }
+                }
                 QStringList desktop_information;
                 desktop_information<<name<<icon<<exec<<filename;
                 desktop_files_list.append(desktop_information);
@@ -330,6 +337,13 @@ void Launcher_FullScreen::get_desktop_file()
                 {
                     exec=nullptr;
                 }
+                if (desktopFile.contains("Terminal"))
+                {
+                    if (desktopFile.value("Terminal").toString()=="true")
+                    {
+                        exec.append("[terminal]");
+                    }
+                }
                 QStringList desktop_information;
                 desktop_information<<name<<icon<<exec<<filename;
                 desktop_files_list.append(desktop_information);
@@ -401,6 +415,13 @@ void Launcher_FullScreen::get_desktop_file()
                 else
                 {
                     exec=nullptr;
+                }
+                if (desktopFile.contains("Terminal"))
+                {
+                    if (desktopFile.value("Terminal").toString()=="true")
+                    {
+                        exec.append("[terminal]");
+                    }
                 }
                 QStringList desktop_information;
                 desktop_information<<name<<icon<<exec<<filename;

@@ -80,8 +80,19 @@ void OnlyDragListView::click_run_class()
         setCurrentIndex(index);
         if (desktop_files_list[row].size()==4)
         {
-            QString run="/bin/bash -c \"cd ~;"+desktop_files_list[row][2]+"\"";
-            QProcess::startDetached(run);//could not open libreoffice*;//!!!java;
+            if (!desktop_files_list[row][2].contains("|terminal|"))
+            {
+                QString run="/bin/bash -c \"cd ~;"+desktop_files_list[row][2]+"\"";
+                QProcess::startDetached(run);//could not open libreoffice*;//!!!java in QC;
+            }
+            else
+            {
+                QString new_exec=desktop_files_list[row][2];
+                new_exec.chop(10);
+                QString run="/bin/bash -c \"cd ~;deepin-terminal -e "+new_exec+"\"";
+                qDebug()<<run;
+                QProcess::startDetached(run);
+            }
             to_close_all=true;
         }
     }

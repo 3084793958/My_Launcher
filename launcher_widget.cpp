@@ -1434,6 +1434,13 @@ void Launcher_Widget::get_desktop_file()
                 {
                     exec=nullptr;
                 }
+                if (desktopFile.contains("Terminal"))
+                {
+                    if (desktopFile.value("Terminal").toString()=="true")
+                    {
+                        exec.append("|terminal|");
+                    }
+                }
                 QStringList desktop_information;
                 desktop_information<<name<<icon<<exec<<filename;
                 desktop_files_list.append(desktop_information);
@@ -1569,6 +1576,13 @@ void Launcher_Widget::get_desktop_file()
                 {
                     exec=nullptr;
                 }
+                if (desktopFile.contains("Terminal"))
+                {
+                    if (desktopFile.value("Terminal").toString()=="true")
+                    {
+                        exec.append("|terminal|");
+                    }
+                }
                 QStringList desktop_information;
                 desktop_information<<name<<icon<<exec<<filename;
                 desktop_files_list.append(desktop_information);
@@ -1703,6 +1717,13 @@ void Launcher_Widget::get_desktop_file()
                 else
                 {
                     exec=nullptr;
+                }
+                if (desktopFile.contains("Terminal"))
+                {
+                    if (desktopFile.value("Terminal").toString()=="true")
+                    {
+                        exec.append("|terminal|");
+                    }
                 }
                 QStringList desktop_information;
                 desktop_information<<name<<icon<<exec<<filename;
@@ -2067,24 +2088,17 @@ void Launcher_Widget::click_run_class()
         Show_Desktop_List_View->setCurrentIndex(index);
         if (desktop_files_list[row].size()==4)
         {
-            if (false)
+            if (!desktop_files_list[row][2].contains("|terminal|"))
             {
-                QString run="/usr/lib/libreoffice/program/soffice.bin";
-                QStringList get_list,do_list;
-                get_list=desktop_files_list[row][2].split(" ");
-                for (int i=0;i<get_list.size();i++)
-                {
-                    if (i!=0)
-                    {
-                        do_list<<get_list[i];
-                    }
-                }
-                QProcess::startDetached(run,do_list);
+                QString run="/bin/bash -c \"cd ~;"+desktop_files_list[row][2]+"\"";
+                QProcess::startDetached(run);//could not open libreoffice*;//!!!java in QC;
             }
             else
             {
-            QString run="/bin/bash -c \"cd ~;"+desktop_files_list[row][2]+"\"";
-            QProcess::startDetached(run);//could not open libreoffice*;//!!!java;
+                QString new_exec=desktop_files_list[row][2];
+                new_exec.chop(10);
+                QString run="/bin/bash -c \"cd ~;deepin-terminal -e "+new_exec+"\"";
+                QProcess::startDetached(run);
             }
             to_close_all=true;
         }
@@ -2099,8 +2113,18 @@ void Launcher_Widget::click_run_class_table()
         Show_Desktop_Table_Table_View->setCurrentIndex(index);
         if (desktop_type_list[row].size()==4)
         {
-            QString run="/bin/bash -c \"cd ~;"+desktop_type_list[row][2]+"\"";
-            QProcess::startDetached(run);//could not open libreoffice*;//!!!java;
+            if (!desktop_type_list[row][2].contains("|terminal|"))
+            {
+                QString run="/bin/bash -c \"cd ~;"+desktop_type_list[row][2]+"\"";
+                QProcess::startDetached(run);//could not open libreoffice*;//!!!java in QC;
+            }
+            else
+            {
+                QString new_exec=desktop_type_list[row][2];
+                new_exec.chop(10);
+                QString run="/bin/bash -c \"cd ~;deepin-terminal -e "+new_exec+"\"";
+                QProcess::startDetached(run);
+            }
             to_close_all=true;
         }
     }
