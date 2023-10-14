@@ -336,6 +336,78 @@ void Launcher_FullScreen::get_desktop_file()
             }
         }
     }
+    QDirIterator it_linglong("/data/linglong/entries/share/applications",{"*.desktop"},QDir::NoFilter,QDirIterator::FollowSymlinks);
+    while(it_linglong.hasNext())
+    {
+        const auto filename=it_linglong.next();
+        QSettings desktopFile(filename,QSettings::IniFormat);
+        desktopFile.setIniCodec(QTextCodec::codecForName("utf-8"));
+        if (desktopFile.childGroups().contains("Desktop Entry"))
+        {
+            desktopFile.beginReadArray("Desktop Entry");
+            bool can_pass=true;
+            if (desktopFile.contains("NoDisplay"))
+            {
+                if (desktopFile.value("NoDisplay").toBool())
+                {
+                    can_pass=false;
+                }
+            }
+            if (desktopFile.contains("OnlyShowIn"))
+            {
+                if (desktopFile.value("OnlyShowIn")!="Deepin"&&desktopFile.value("OnlyShowIn")!="KDE")
+                {
+                    can_pass=false;
+                }
+            }
+            if (desktopFile.contains("NotShowIn"))
+            {
+                if (desktopFile.value("NotShowIn")!="GNOME")
+                {
+                    can_pass=false;
+                }
+            }
+            if (can_pass)
+            {
+                QString name,icon,exec;
+                if (desktopFile.contains("Name[zh_CN]"))
+                {
+                    name=desktopFile.value("Name[zh_CN]").toString();
+                }
+                else if (desktopFile.contains("Name[zh]"))
+                {
+                    name=desktopFile.value("Name[zh]").toString();
+                }
+                else if (desktopFile.contains("Name"))
+                {
+                    name=desktopFile.value("Name").toString();
+                }
+                else
+                {
+                    name="nullptr";
+                }
+                if (desktopFile.contains("Icon"))
+                {
+                    icon=desktopFile.value("Icon","application").toString();
+                }
+                else
+                {
+                    icon=":/image/image/demo.gif";
+                }
+                if (desktopFile.contains("Exec"))
+                {
+                    exec=desktopFile.value("Exec").toString().remove("\"").remove(QRegExp("%."));
+                }
+                else
+                {
+                    exec=nullptr;
+                }
+                QStringList desktop_information;
+                desktop_information<<name<<icon<<exec<<filename;
+                desktop_files_list.append(desktop_information);
+            }
+        }
+    }
     QDirIterator it_auto_start(QDir::homePath()+"/.config/autostart",{"*.desktop"},QDir::NoFilter,QDirIterator::FollowSymlinks);
     auto_start_program_list.clear();
     while(it_auto_start.hasNext())
@@ -490,7 +562,7 @@ void Launcher_FullScreen::timer_update()
             search_get_desktop.clear();
             for (int i=0;i<desktop_files_list.size();i++)
             {
-                if (desktop_files_list[i][0].contains(search_words,Qt::CaseInsensitive))
+                if (desktop_files_list[i][0].contains(search_words,Qt::CaseInsensitive)||from_way_to_name(desktop_files_list[i][3]).contains(search_words,Qt::CaseInsensitive))
                 {
                     search_get_desktop<<desktop_files_list[i];
                 }
@@ -809,7 +881,7 @@ void Launcher_FullScreen::all_update()
         search_get_desktop.clear();
         for (int i=0;i<desktop_files_list.size();i++)
         {
-            if (desktop_files_list[i][0].contains(search_words,Qt::CaseInsensitive))
+            if (desktop_files_list[i][0].contains(search_words,Qt::CaseInsensitive)||from_way_to_name(desktop_files_list[i][3]).contains(search_words,Qt::CaseInsensitive))
             {
                 search_get_desktop<<desktop_files_list[i];
             }
@@ -1010,4 +1082,14 @@ void Launcher_FullScreen::all_update()
         make_show_label->show_desktop_label->setLayout(layout);
         delete layout;
     }
+}
+QString Launcher_FullScreen::from_way_to_name(QString way)
+{
+    int index;
+    QString new_way=way;
+    index=new_way.lastIndexOf("/");
+    new_way.remove(0,index);
+    index=new_way.lastIndexOf(".");
+    new_way.truncate(index);
+    return new_way;
 }

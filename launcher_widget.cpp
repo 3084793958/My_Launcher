@@ -528,7 +528,14 @@ void Launcher_Widget::timer_update()
             QHBoxLayout *layout_love=new QHBoxLayout();
             make_show_love_label->resize(234,265);
             make_show_love_label->show_desktop_label->resize((desktop_number_love/9+1)*234,255);
-            make_show_love_label->set_end_x(18*(desktop_number_love/9+1));
+            if (float(desktop_number_love/9)==float(desktop_number_love)/9)
+            {
+                make_show_love_label->set_end_x(18*(desktop_number_love/9));
+            }
+            else
+            {
+                make_show_love_label->set_end_x(18*(desktop_number_love/9+1));
+            }
             make_show_love_label->button_update();
             delete make_show_love_label->show_desktop_label->layout();
             for (int i=0;i<Love_view_list.size();i++)
@@ -643,7 +650,8 @@ void Launcher_Widget::timer_update()
                     if (desktop_files_list[i].size()==4)
                     {
                         QString desktop_name=desktop_files_list[i][0];
-                        if (desktop_name.contains(Search_string,Qt::CaseInsensitive))
+                        QString desktop_name2=from_way_to_name(desktop_files_list[i][3]);
+                        if (desktop_name.contains(Search_string,Qt::CaseInsensitive)||desktop_name2.contains(Search_string,Qt::CaseInsensitive))
                         {
                             Show_Desktop_List_View->setRowHidden(i,false);
                         }
@@ -659,7 +667,7 @@ void Launcher_Widget::timer_update()
                 int desktop_number=0;
                 for (int i=0;i<desktop_files_list.size();i++)
                 {
-                    if (desktop_files_list[i].size()==4&&desktop_files_list[i][0].contains(Search_string,Qt::CaseInsensitive))
+                    if (desktop_files_list[i].size()==4&&(desktop_files_list[i][0].contains(Search_string,Qt::CaseInsensitive)||from_way_to_name(desktop_files_list[i][3]).contains(Search_string,Qt::CaseInsensitive)))
                     {
                         desktop_number++;
                     }
@@ -723,7 +731,7 @@ void Launcher_Widget::timer_update()
                         }
                         else
                         {
-                        if (desktop_files_list[i*15+k+no_pass_number].size()==4&&desktop_files_list[i*15+k+no_pass_number][0].contains(Search_string,Qt::CaseInsensitive))
+                        if (desktop_files_list[i*15+k+no_pass_number].size()==4&&(desktop_files_list[i*15+k+no_pass_number][0].contains(Search_string,Qt::CaseInsensitive)||from_way_to_name(desktop_files_list[i*15+k+no_pass_number][3]).contains(Search_string,Qt::CaseInsensitive)))
                         {
                             number_k++;
                             QStandardItem *item;
@@ -780,7 +788,8 @@ void Launcher_Widget::timer_update()
                     if (desktop_type_list[i].size()==4)
                     {
                         QString desktop_name=desktop_type_list[i][0];
-                        if (desktop_name.contains(Search_string,Qt::CaseInsensitive))
+                        QString desktop_name2=from_way_to_name(desktop_type_list[i][3]);
+                        if (desktop_name.contains(Search_string,Qt::CaseInsensitive)||desktop_name2.contains(Search_string,Qt::CaseInsensitive))
                         {
                             Show_Desktop_Table_Table_View->setRowHidden(i,false);
                         }
@@ -795,11 +804,20 @@ void Launcher_Widget::timer_update()
             show_love_label->resize(234,265);
             //
             int desktop_number=0;
-            for (int i=0;i<love_desktop_list.size();i++)
+            for (int i=0;i<desktop_files_list.size();i++)
             {
-                if (love_desktop_list[i].contains(Search_string,Qt::CaseInsensitive))
+                if (desktop_files_list[i].size()==4)
                 {
-                    desktop_number++;
+                    for (int k=0;k<love_desktop_list.size();k++)
+                    {
+                        if (desktop_files_list[i][0]==love_desktop_list[k])
+                        {
+                            if (desktop_files_list[i][0].contains(Search_string,Qt::CaseInsensitive)||from_way_to_name(desktop_files_list[i][3]).contains(Search_string,Qt::CaseInsensitive))
+                            {
+                                desktop_number++;
+                            }
+                        }
+                    }
                 }
             }
             QHBoxLayout *layout=new QHBoxLayout();
@@ -864,7 +882,7 @@ void Launcher_Widget::timer_update()
                     bool in_love=false;
                     for (int l=0;l<love_desktop_list.size();l++)
                     {
-                        if (love_desktop_list[l]==desktop_files_list[i*9+k+no_pass_number][0]&&desktop_files_list[i*9+k+no_pass_number][0].contains(Search_string,Qt::CaseInsensitive))
+                        if (love_desktop_list[l]==desktop_files_list[i*9+k+no_pass_number][0]&&(desktop_files_list[i*9+k+no_pass_number][0].contains(Search_string,Qt::CaseInsensitive)||from_way_to_name(desktop_files_list[i*9+k+no_pass_number][3]).contains(Search_string,Qt::CaseInsensitive)))
                         {
                             in_love=true;
                         }
@@ -998,7 +1016,8 @@ void Launcher_Widget::choose_list_slot()
             if (desktop_files_list[i].size()==4)
             {
                 QString desktop_name=desktop_files_list[i][0];
-                if (desktop_name.contains(Search_string,Qt::CaseInsensitive))
+                QString desktop_name2=from_way_to_name(desktop_files_list[i][3]);
+                if (desktop_name.contains(Search_string,Qt::CaseInsensitive)||desktop_name2.contains(Search_string,Qt::CaseInsensitive))
                 {
                     Show_Desktop_List_View->setRowHidden(i,false);
                 }
@@ -1146,7 +1165,7 @@ void Launcher_Widget::choose_table_slot()
         int desktop_number=0;
         for (int i=0;i<desktop_files_list.size();i++)
         {
-            if (desktop_files_list[i].size()==4&&desktop_files_list[i][0].contains(Search_string,Qt::CaseInsensitive))
+            if (desktop_files_list[i].size()==4&&(desktop_files_list[i][0].contains(Search_string,Qt::CaseInsensitive)||from_way_to_name(desktop_files_list[i][3]).contains(Search_string,Qt::CaseInsensitive)))
             {
                 desktop_number++;
             }
@@ -1210,7 +1229,7 @@ void Launcher_Widget::choose_table_slot()
                 }
                 else
                 {
-                if (desktop_files_list[i*15+k+no_pass_number].size()==4&&desktop_files_list[i*15+k+no_pass_number][0].contains(Search_string,Qt::CaseInsensitive))
+                if (desktop_files_list[i*15+k+no_pass_number].size()==4&&(desktop_files_list[i*15+k+no_pass_number][0].contains(Search_string,Qt::CaseInsensitive)||from_way_to_name(desktop_files_list[i*15+k+no_pass_number][3]).contains(Search_string,Qt::CaseInsensitive)))
                 {
                     number_k++;
                     QStandardItem *item;
@@ -1326,7 +1345,8 @@ void Launcher_Widget::choose_table_table_slot()
             if (desktop_type_list[i].size()==4)
             {
                 QString desktop_name=desktop_type_list[i][0];
-                if (desktop_name.contains(Search_string,Qt::CaseInsensitive))
+                QString desktop_name2=from_way_to_name(desktop_type_list[i][3]);
+                if (desktop_name.contains(Search_string,Qt::CaseInsensitive)||desktop_name2.contains(Search_string,Qt::CaseInsensitive))
                 {
                     Show_Desktop_Table_Table_View->setRowHidden(i,false);
                 }
@@ -1487,6 +1507,141 @@ void Launcher_Widget::get_desktop_file()
     while(it_home.hasNext())
     {
         const auto filename=it_home.next();
+        QSettings desktopFile(filename,QSettings::IniFormat);
+        desktopFile.setIniCodec(QTextCodec::codecForName("utf-8"));
+        if (desktopFile.childGroups().contains("Desktop Entry"))
+        {
+            desktopFile.beginReadArray("Desktop Entry");
+            bool can_pass=true;
+            if (desktopFile.contains("NoDisplay"))
+            {
+                if (desktopFile.value("NoDisplay").toBool())
+                {
+                    can_pass=false;
+                }
+            }
+            if (desktopFile.contains("OnlyShowIn"))
+            {
+                if (desktopFile.value("OnlyShowIn")!="Deepin"&&desktopFile.value("OnlyShowIn")!="KDE")
+                {
+                    can_pass=false;
+                }
+            }
+            if (desktopFile.contains("NotShowIn"))
+            {
+                if (desktopFile.value("NotShowIn")!="GNOME")
+                {
+                    can_pass=false;
+                }
+            }
+            if (can_pass)
+            {
+                QString name,icon,exec;
+                if (desktopFile.contains("Name[zh_CN]"))
+                {
+                    name=desktopFile.value("Name[zh_CN]").toString();
+                }
+                else if (desktopFile.contains("Name[zh]"))
+                {
+                    name=desktopFile.value("Name[zh]").toString();
+                }
+                else if (desktopFile.contains("Name"))
+                {
+                    name=desktopFile.value("Name").toString();
+                }
+                else
+                {
+                    name="nullptr";
+                }
+                if (desktopFile.contains("Icon"))
+                {
+                    icon=desktopFile.value("Icon","application").toString();
+                }
+                else
+                {
+                    icon=":/image/image/demo.gif";
+                }
+                if (desktopFile.contains("Exec"))
+                {
+                    exec=desktopFile.value("Exec").toString().remove("\"").remove(QRegExp("%."));
+                }
+                else
+                {
+                    exec=nullptr;
+                }
+                QStringList desktop_information;
+                desktop_information<<name<<icon<<exec<<filename;
+                desktop_files_list.append(desktop_information);
+                if (desktopFile.contains("Categories"))
+                {
+                    ifstream load_data;
+                    load_data.open(filename.toStdString(),ios::in);
+                    string s;
+                    QString result_qstring;
+                    while(getline(load_data,s))
+                    {
+                        if (QString::fromStdString(s).contains("Categories="))
+                        {
+                            result_qstring=QString::fromStdString(s);
+                            result_qstring.remove(0,11);
+                        }
+                    }
+                    if (result_qstring.contains("Network",Qt::CaseInsensitive)||result_qstring.contains("downloader",Qt::CaseInsensitive))
+                    {
+                        Network_type.append(desktop_information);
+                    }
+                    else if (result_qstring.contains("Chat",Qt::CaseInsensitive))
+                    {
+                        Chat_type.append(desktop_information);
+                    }
+                    else if ((result_qstring.contains("Video",Qt::CaseInsensitive)&&!result_qstring.contains("AudioVideo",Qt::CaseInsensitive))||((result_qstring.contains("Player",Qt::CaseInsensitive)||result_qstring.contains("Recorder",Qt::CaseInsensitive))&&result_qstring.contains("AudioVideo",Qt::CaseInsensitive))||(result_qstring.contains("AudioVideoEditing",Qt::CaseInsensitive)&&!result_qstring.contains("Audio;",Qt::CaseInsensitive)))
+                    {
+                        Video_type.append(desktop_information);
+                    }
+                    else if (result_qstring.contains("Audio",Qt::CaseInsensitive))
+                    {
+                        Audio_type.append(desktop_information);
+                    }
+                    else if (result_qstring.contains("Graphics",Qt::CaseInsensitive))
+                    {
+                        Graphics_type.append(desktop_information);
+                    }
+                    else if (result_qstring.contains("Game",Qt::CaseInsensitive))
+                    {
+                        Game_type.append(desktop_information);
+                    }
+                    else if ((result_qstring.contains("Office",Qt::CaseInsensitive)||result_qstring.contains("Documentation",Qt::CaseInsensitive)||result_qstring.contains("TextEditor",Qt::CaseInsensitive))&&!result_qstring.contains("System",Qt::CaseInsensitive)&&!result_qstring.contains("IDE",Qt::CaseInsensitive))
+                    {
+                        Office_type.append(desktop_information);
+                    }
+                    else if (result_qstring.contains("System",Qt::CaseInsensitive)||result_qstring.contains("Utility",Qt::CaseInsensitive)||result_qstring.contains("Compression",Qt::CaseInsensitive)||result_qstring.contains("KDE",Qt::CaseInsensitive))
+                    {
+                        System_type.append(desktop_information);
+                    }
+                    else if (result_qstring.contains("Translation",Qt::CaseInsensitive))
+                    {
+                        Translation_type.append(desktop_information);
+                    }
+                    else if (result_qstring.contains("Development",Qt::CaseInsensitive))
+                    {
+                        Development_type.append(desktop_information);
+                    }
+                    else
+                    {
+                        Other_type.append(desktop_information);
+                    }
+                }
+                else
+                {
+                    Other_type.append(desktop_information);
+                }
+            }
+        }
+    }
+    QDirIterator it_linglong("/data/linglong/entries/share/applications",{"*.desktop"},QDir::NoFilter,QDirIterator::FollowSymlinks);
+    while(it_linglong.hasNext())
+    {
+        const auto filename=it_linglong.next();
         QSettings desktopFile(filename,QSettings::IniFormat);
         desktopFile.setIniCodec(QTextCodec::codecForName("utf-8"));
         if (desktopFile.childGroups().contains("Desktop Entry"))
@@ -1912,8 +2067,25 @@ void Launcher_Widget::click_run_class()
         Show_Desktop_List_View->setCurrentIndex(index);
         if (desktop_files_list[row].size()==4)
         {
+            if (false)
+            {
+                QString run="/usr/lib/libreoffice/program/soffice.bin";
+                QStringList get_list,do_list;
+                get_list=desktop_files_list[row][2].split(" ");
+                for (int i=0;i<get_list.size();i++)
+                {
+                    if (i!=0)
+                    {
+                        do_list<<get_list[i];
+                    }
+                }
+                QProcess::startDetached(run,do_list);
+            }
+            else
+            {
             QString run="/bin/bash -c \"cd ~;"+desktop_files_list[row][2]+"\"";
             QProcess::startDetached(run);//could not open libreoffice*;//!!!java;
+            }
             to_close_all=true;
         }
     }
@@ -2091,11 +2263,20 @@ void Launcher_Widget::dropEvent(QDropEvent *event)
                     show_love_label->resize(234,265);
                     //
                     int desktop_number=0;
-                    for (int i=0;i<love_desktop_list.size();i++)
+                    for (int i=0;i<desktop_files_list.size();i++)
                     {
-                        if (love_desktop_list[i].contains(Search_string,Qt::CaseInsensitive))
+                        if (desktop_files_list[i].size()==4)
                         {
-                            desktop_number++;
+                            for (int k=0;k<love_desktop_list.size();k++)
+                            {
+                                if (desktop_files_list[i][0]==love_desktop_list[k])
+                                {
+                                    if (desktop_files_list[i][0].contains(Search_string,Qt::CaseInsensitive)||from_way_to_name(desktop_files_list[i][3]).contains(Search_string,Qt::CaseInsensitive))
+                                    {
+                                        desktop_number++;
+                                    }
+                                }
+                            }
                         }
                     }
                     QHBoxLayout *layout=new QHBoxLayout();
@@ -2160,7 +2341,7 @@ void Launcher_Widget::dropEvent(QDropEvent *event)
                             bool in_love=false;
                             for (int l=0;l<love_desktop_list.size();l++)
                             {
-                                if (love_desktop_list[l]==desktop_files_list[i*9+k+no_pass_number][0]&&desktop_files_list[i*9+k+no_pass_number][0].contains(Search_string,Qt::CaseInsensitive))
+                                if (love_desktop_list[l]==desktop_files_list[i*9+k+no_pass_number][0]&&(desktop_files_list[i*9+k+no_pass_number][0].contains(Search_string,Qt::CaseInsensitive)||from_way_to_name(desktop_files_list[i*9+k+no_pass_number][3]).contains(Search_string,Qt::CaseInsensitive)))
                                 {
                                     in_love=true;
                                 }
@@ -2406,11 +2587,20 @@ void Launcher_Widget::contextMenuEvent(QContextMenuEvent *event)
                             show_love_label->resize(234,265);
                             //
                             int desktop_number=0;
-                            for (int i=0;i<love_desktop_list.size();i++)
+                            for (int i=0;i<desktop_files_list.size();i++)
                             {
-                                if (love_desktop_list[i].contains(Search_string,Qt::CaseInsensitive))
+                                if (desktop_files_list[i].size()==4)
                                 {
-                                    desktop_number++;
+                                    for (int k=0;k<love_desktop_list.size();k++)
+                                    {
+                                        if (desktop_files_list[i][0]==love_desktop_list[k])
+                                        {
+                                            if (desktop_files_list[i][0].contains(Search_string,Qt::CaseInsensitive)||from_way_to_name(desktop_files_list[i][3]).contains(Search_string,Qt::CaseInsensitive))
+                                            {
+                                                desktop_number++;
+                                            }
+                                        }
+                                    }
                                 }
                             }
                             QHBoxLayout *layout=new QHBoxLayout();
@@ -2475,7 +2665,7 @@ void Launcher_Widget::contextMenuEvent(QContextMenuEvent *event)
                                     bool in_love=false;
                                     for (int l=0;l<love_desktop_list.size();l++)
                                     {
-                                        if (love_desktop_list[l]==desktop_files_list[i*9+k+no_pass_number][0]&&desktop_files_list[i*9+k+no_pass_number][0].contains(Search_string,Qt::CaseInsensitive))
+                                        if (love_desktop_list[l]==desktop_files_list[i*9+k+no_pass_number][0]&&(desktop_files_list[i*9+k+no_pass_number][0].contains(Search_string,Qt::CaseInsensitive)||from_way_to_name(desktop_files_list[i*9+k+no_pass_number][3]).contains(Search_string,Qt::CaseInsensitive)))
                                         {
                                             in_love=true;
                                         }
@@ -2744,11 +2934,20 @@ void Launcher_Widget::contextMenuEvent(QContextMenuEvent *event)
                                 show_love_label->resize(234,265);
                                 //
                                 int desktop_number=0;
-                                for (int i=0;i<love_desktop_list.size();i++)
+                                for (int i=0;i<desktop_files_list.size();i++)
                                 {
-                                    if (love_desktop_list[i].contains(Search_string,Qt::CaseInsensitive))
+                                    if (desktop_files_list[i].size()==4)
                                     {
-                                        desktop_number++;
+                                        for (int k=0;k<love_desktop_list.size();k++)
+                                        {
+                                            if (desktop_files_list[i][0]==love_desktop_list[k])
+                                            {
+                                                if (desktop_files_list[i][0].contains(Search_string,Qt::CaseInsensitive)||from_way_to_name(desktop_files_list[i][3]).contains(Search_string,Qt::CaseInsensitive))
+                                                {
+                                                    desktop_number++;
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                                 QHBoxLayout *layout=new QHBoxLayout();
@@ -2813,7 +3012,7 @@ void Launcher_Widget::contextMenuEvent(QContextMenuEvent *event)
                                         bool in_love=false;
                                         for (int l=0;l<love_desktop_list.size();l++)
                                         {
-                                            if (love_desktop_list[l]==desktop_files_list[i*9+k+no_pass_number][0]&&desktop_files_list[i*9+k+no_pass_number][0].contains(Search_string,Qt::CaseInsensitive))
+                                            if (love_desktop_list[l]==desktop_files_list[i*9+k+no_pass_number][0]&&(desktop_files_list[i*9+k+no_pass_number][0].contains(Search_string,Qt::CaseInsensitive)||from_way_to_name(desktop_files_list[i*9+k+no_pass_number][3]).contains(Search_string,Qt::CaseInsensitive)))
                                             {
                                                 in_love=true;
                                             }
@@ -3081,11 +3280,20 @@ void Launcher_Widget::contextMenuEvent(QContextMenuEvent *event)
                             show_love_label->resize(234,265);
                             //
                             int desktop_number=0;
-                            for (int i=0;i<love_desktop_list.size();i++)
+                            for (int i=0;i<desktop_files_list.size();i++)
                             {
-                                if (love_desktop_list[i].contains(Search_string,Qt::CaseInsensitive))
+                                if (desktop_files_list[i].size()==4)
                                 {
-                                    desktop_number++;
+                                    for (int k=0;k<love_desktop_list.size();k++)
+                                    {
+                                        if (desktop_files_list[i][0]==love_desktop_list[k])
+                                        {
+                                            if (desktop_files_list[i][0].contains(Search_string,Qt::CaseInsensitive)||from_way_to_name(desktop_files_list[i][3]).contains(Search_string,Qt::CaseInsensitive))
+                                            {
+                                                desktop_number++;
+                                            }
+                                        }
+                                    }
                                 }
                             }
                             QHBoxLayout *layout=new QHBoxLayout();
@@ -3150,7 +3358,7 @@ void Launcher_Widget::contextMenuEvent(QContextMenuEvent *event)
                                     bool in_love=false;
                                     for (int l=0;l<love_desktop_list.size();l++)
                                     {
-                                        if (love_desktop_list[l]==desktop_files_list[i*9+k+no_pass_number][0]&&desktop_files_list[i*9+k+no_pass_number][0].contains(Search_string,Qt::CaseInsensitive))
+                                        if (love_desktop_list[l]==desktop_files_list[i*9+k+no_pass_number][0]&&(desktop_files_list[i*9+k+no_pass_number][0].contains(Search_string,Qt::CaseInsensitive)||from_way_to_name(desktop_files_list[i*9+k+no_pass_number][3]).contains(Search_string,Qt::CaseInsensitive)))
                                         {
                                             in_love=true;
                                         }
@@ -3421,11 +3629,20 @@ void Launcher_Widget::contextMenuEvent(QContextMenuEvent *event)
                             show_love_label->resize(234,265);
                             //
                             int desktop_number=0;
-                            for (int i=0;i<love_desktop_list.size();i++)
+                            for (int i=0;i<desktop_files_list.size();i++)
                             {
-                                if (love_desktop_list[i].contains(Search_string,Qt::CaseInsensitive))
+                                if (desktop_files_list[i].size()==4)
                                 {
-                                    desktop_number++;
+                                    for (int k=0;k<love_desktop_list.size();k++)
+                                    {
+                                        if (desktop_files_list[i][0]==love_desktop_list[k])
+                                        {
+                                            if (desktop_files_list[i][0].contains(Search_string,Qt::CaseInsensitive)||from_way_to_name(desktop_files_list[i][3]).contains(Search_string,Qt::CaseInsensitive))
+                                            {
+                                                desktop_number++;
+                                            }
+                                        }
+                                    }
                                 }
                             }
                             QHBoxLayout *layout=new QHBoxLayout();
@@ -3490,7 +3707,7 @@ void Launcher_Widget::contextMenuEvent(QContextMenuEvent *event)
                                     bool in_love=false;
                                     for (int l=0;l<love_desktop_list.size();l++)
                                     {
-                                        if (love_desktop_list[l]==desktop_files_list[i*9+k+no_pass_number][0]&&desktop_files_list[i*9+k+no_pass_number][0].contains(Search_string,Qt::CaseInsensitive))
+                                        if (love_desktop_list[l]==desktop_files_list[i*9+k+no_pass_number][0]&&(desktop_files_list[i*9+k+no_pass_number][0].contains(Search_string,Qt::CaseInsensitive)||from_way_to_name(desktop_files_list[i*9+k+no_pass_number][3]).contains(Search_string,Qt::CaseInsensitive)))
                                         {
                                             in_love=true;
                                         }
@@ -3647,7 +3864,8 @@ void Launcher_Widget::all_update()
             if (desktop_files_list[i].size()==4)
             {
                 QString desktop_name=desktop_files_list[i][0];
-                if (desktop_name.contains(Search_string,Qt::CaseInsensitive))
+                QString desktop_name2=from_way_to_name(desktop_files_list[i][3]);
+                if (desktop_name.contains(Search_string,Qt::CaseInsensitive)||desktop_name2.contains(Search_string,Qt::CaseInsensitive))
                 {
                     Show_Desktop_List_View->setRowHidden(i,false);
                 }
@@ -3785,7 +4003,7 @@ void Launcher_Widget::all_update()
         int desktop_number=0;
         for (int i=0;i<desktop_files_list.size();i++)
         {
-            if (desktop_files_list[i].size()==4&&desktop_files_list[i][0].contains(Search_string,Qt::CaseInsensitive))
+            if (desktop_files_list[i].size()==4&&(desktop_files_list[i][0].contains(Search_string,Qt::CaseInsensitive)||from_way_to_name(desktop_files_list[i][3]).contains(Search_string,Qt::CaseInsensitive)))
             {
                 desktop_number++;
             }
@@ -3849,7 +4067,7 @@ void Launcher_Widget::all_update()
                 }
                 else
                 {
-                if (desktop_files_list[i*15+k+no_pass_number].size()==4&&desktop_files_list[i*15+k+no_pass_number][0].contains(Search_string,Qt::CaseInsensitive))
+                if (desktop_files_list[i*15+k+no_pass_number].size()==4&&(desktop_files_list[i*15+k+no_pass_number][0].contains(Search_string,Qt::CaseInsensitive)||from_way_to_name(desktop_files_list[i*15+k+no_pass_number][3]).contains(Search_string,Qt::CaseInsensitive)))
                 {
                     number_k++;
                     QStandardItem *item;
@@ -3956,7 +4174,8 @@ void Launcher_Widget::all_update()
                 if (desktop_type_list[i].size()==4)
                 {
                     QString desktop_name=desktop_type_list[i][0];
-                    if (desktop_name.contains(Search_string,Qt::CaseInsensitive))
+                    QString desktop_name2=from_way_to_name(desktop_files_list[i][3]);
+                    if (desktop_name.contains(Search_string,Qt::CaseInsensitive)||desktop_name2.contains(Search_string,Qt::CaseInsensitive))
                     {
                         Show_Desktop_Table_Table_View->setRowHidden(i,false);
                     }
@@ -4097,11 +4316,20 @@ void Launcher_Widget::all_update()
         if (search_line->text()!=nullptr)
         {
             int desktop_number=0;
-            for (int i=0;i<love_desktop_list.size();i++)
+            for (int i=0;i<desktop_files_list.size();i++)
             {
-                if (love_desktop_list[i].contains(Search_string,Qt::CaseInsensitive))
+                if (desktop_files_list[i].size()==4)
                 {
-                    desktop_number++;
+                    for (int k=0;k<love_desktop_list.size();k++)
+                    {
+                        if (desktop_files_list[i][0]==love_desktop_list[k])
+                        {
+                            if (desktop_files_list[i][0].contains(Search_string,Qt::CaseInsensitive)||from_way_to_name(desktop_files_list[i][3]).contains(Search_string,Qt::CaseInsensitive))
+                            {
+                                desktop_number++;
+                            }
+                        }
+                    }
                 }
             }
             QHBoxLayout *layout=new QHBoxLayout();
@@ -4166,7 +4394,7 @@ void Launcher_Widget::all_update()
                     bool in_love=false;
                     for (int l=0;l<love_desktop_list.size();l++)
                     {
-                        if (love_desktop_list[l]==desktop_files_list[i*9+k+no_pass_number][0]&&desktop_files_list[i*9+k+no_pass_number][0].contains(Search_string,Qt::CaseInsensitive))
+                        if (love_desktop_list[l]==desktop_files_list[i*9+k+no_pass_number][0]&&(desktop_files_list[i*9+k+no_pass_number][0].contains(Search_string,Qt::CaseInsensitive)||from_way_to_name(desktop_files_list[i*9+k+no_pass_number][3]).contains(Search_string,Qt::CaseInsensitive)))
                         {
                             in_love=true;
                         }
@@ -4252,4 +4480,14 @@ void Launcher_Widget::set_img_qmovie(QString movie_url)
     user_img_movie->start();
     show_user_img->resize(40,40);
     show_user_img->setMovie(user_img_movie);
+}
+QString Launcher_Widget::from_way_to_name(QString way)
+{
+    int index;
+    QString new_way=way;
+    index=new_way.lastIndexOf("/");
+    new_way.remove(0,index);
+    index=new_way.lastIndexOf(".");
+    new_way.truncate(index);
+    return new_way;
 }

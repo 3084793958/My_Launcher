@@ -2,6 +2,9 @@
 #include"keyscan.h"
 #include<fstream>
 #include<iostream>
+#include<QDBusPendingReply>
+#include<QDBusInterface>
+#include<QDBusPendingCallWatcher>
 using namespace std;
 int choose_simple_or_fullscreen=1;
 bool simple_close=false;
@@ -9,6 +12,7 @@ bool fullscreen_close=false;
 Setting_Control::Setting_Control(QWidget *parent)
     :QWidget(parent)
 {
+    QDBusConnection::sessionBus().connect(QString(),"/my/launcher","com.my.launcher","send_to_show",this,SLOT(show_hide_slot(QString)));
     setWindowFlags(Qt::Tool);
     resize(0,0);
     load_config();
@@ -300,5 +304,39 @@ bool Setting_Control::get_pos_in(int pos_x,int pos_y,int in_x,int in_y,int in_si
     else
     {
         return false;
+    }
+}
+void Setting_Control::show_hide_slot(QString result)
+{
+    if (result=="Show")
+    {
+    if (new_choose_s_or_f==1)
+    {
+        launcher_simple->get_desktop_file();
+        launcher_simple->all_update();
+        launcher_fullscreen->close();
+        if (launcher_simple->isHidden())
+        {
+            launcher_simple->show();
+        }
+        else
+        {
+            launcher_simple->close();
+        }
+    }
+    if (new_choose_s_or_f==2)
+    {
+        launcher_fullscreen->get_desktop_file();
+        launcher_fullscreen->all_update();
+        launcher_simple->close();
+        if (launcher_fullscreen->isHidden())
+        {
+            launcher_fullscreen->show();
+        }
+        else
+        {
+            launcher_fullscreen->close();
+        }
+    }
     }
 }

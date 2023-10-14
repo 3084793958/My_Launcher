@@ -1,5 +1,6 @@
 QT += core gui widgets x11extras
 QT += KWindowSystem
+QT += dbus
 LIBS += -lX11 -lXtst -lKF5WindowSystem
 TARGET = My_Launcher
 TEMPLATE = app

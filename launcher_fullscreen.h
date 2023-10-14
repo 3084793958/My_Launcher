@@ -39,6 +39,7 @@ public slots:
     void get_desktop_file();
     void del_search_text();
     void all_update();
+    QString from_way_to_name(QString way);
 protected:
     void contextMenuEvent(QContextMenuEvent *event);
     bool get_pos_in(int pos_x,int pos_y,int in_x,int in_y,int in_size_x,int in_size_y);

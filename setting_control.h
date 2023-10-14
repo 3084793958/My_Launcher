@@ -23,6 +23,7 @@ public slots:
     void load_config();
     void button_click_to_close();
     void time_update();
+    void show_hide_slot(QString);
 protected:
     bool get_pos_in(int pos_x,int pos_y,int in_x,int in_y,int in_size_x,int in_size_y);
 };

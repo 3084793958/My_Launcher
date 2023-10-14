@@ -82,6 +82,7 @@ public slots:
     void click_run_class_table();
     void all_update();
     void set_img_qmovie(QString movie_url);
+    QString from_way_to_name(QString way);
 protected:
     void dragEnterEvent(QDragEnterEvent *event);
     void dropEvent(QDropEvent *event);

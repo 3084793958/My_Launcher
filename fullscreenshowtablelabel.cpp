@@ -8,7 +8,7 @@ FullScreenShowTableLabel::FullScreenShowTableLabel(QWidget *parent)
     :QLabel(parent)
 {
     screenRect=QGuiApplication::primaryScreen()->geometry();
-    timer_my_listview->setInterval(30);
+    timer_my_listview->setInterval(10);
     connect(timer_my_listview,SIGNAL(timeout()),this,SLOT(time_update()));
     timer_my_listview->start();
 }
