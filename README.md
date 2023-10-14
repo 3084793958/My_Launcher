@@ -78,6 +78,6 @@ qt 5.15.8
 ### 编译后的可执行文件置于Releases中
 源码地址: 
 
-[https://github.com/3084793958/My_Launcher.git](https://github.com/3084793958/My_Launcher.git)
+https://github.com/3084793958/My_Launcher.git
 
 [https://githubfast.com/3084793958/My_Launcher.git](https://githubfast.com/3084793958/My_Launcher.git)
