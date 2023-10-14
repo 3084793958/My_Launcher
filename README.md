@@ -55,5 +55,29 @@ qt 5.15.8
 
 ![a7.png](show/a7.gif)
 
+### 10.14更新
+#### 1.增加QDBus服务
+
+![10.14v1.gif](10.14v1.gif)
+
+![10.14p1.png](10.14p1.png)
+
+![10.14p1.png](10.14p2.png)
+#### 2.增加搜索范围&&linglong应用的desktop
+#### 搜索包含至desktop真实文件名
+![10.14v2.gif](10.14v2.gif)
+
+#### 3.关于libreoffice启动失败问题
+#### 失败原因：在QtCreater中启动
+![10.14v3.gif](10.14v3.gif)
+#### 4.增加desktop中Terminal为true的以终端运行功能
+#### 5.至于发送到任务栏的QDBus
+#### 翻过dde-dock，但我找不到
+#### 6.修复MyShowLoveLabel当OnlyDragListView的数量为9的倍数时，底部页码显示不正常的问题
+
 ### 编译后的可执行文件置于Releases中
-源码地址: [https://github.com/3084793958/My_Launcher.git](https://github.com/3084793958/My_Launcher.git)
+源码地址: 
+
+[https://github.com/3084793958/My_Launcher.git](https://github.com/3084793958/My_Launcher.git)
+
+[https://githubfast.com/3084793958/My_Launcher.git](https://githubfast.com/3084793958/My_Launcher.git)
